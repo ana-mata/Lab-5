@@ -2,7 +2,7 @@
 #   Course: CS2302
 #   Assignment: Lab #5
 #   Instructor: Olac Fuentes
-#   Description: Binary search tree operations
+#   Description: B Hash table and BST implementation
 #   T.A.: Anindita Nath, Malilheh Zargaran
 #   Last modified: 04/03/2019
 #   Purpose: Calculate the similarity between two strings using hash tables and binary search tree to store words
