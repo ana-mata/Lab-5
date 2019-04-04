@@ -42,11 +42,10 @@ def FindC(H,k):
 ############################################### MY CODE ###############################################    
 
 #calculates index for new item    
-def h(s,n):
-    k = 0
+def h(s,n):  
     r = 0
     for c in s:
-        k = int(ord(c)/5)+1
+        k = int(ord(c)/5)+1 
         #in an attempt to do a better job, the key changes each iteration
         r += (r*k + ord(c))
     #Mods so that it is within range    
@@ -266,11 +265,12 @@ def readFile(filename):
             #The first thing in the line array is the word
             Word = lines[0]
             
-            #After that it parses each number and appends it to a list
-            for i in range(1,len(lines)):
-                Vec.append(float(lines[i]))
-            #make that list into a numpy array and insert with word to the final array
-            NodeArray.append([Word,np.array(Vec)])
+            if Word.isalnum():
+                #After that it parses each number and appends it to a list
+                for i in range(1,len(lines)):
+                    Vec.append(float(lines[i]))
+                #make that list into a numpy array and insert with word to the final array
+                NodeArray.append([Word,np.array(Vec)])
             
     return NodeArray
 
@@ -288,65 +288,69 @@ def ReadSimilFile(filename):
 ############################################### Run the code ###############################################
 
 var = input('Choose a table implementation \nType 1 for binary search tree \nor 2 for hash table with chaining \n')
-A = readFile('glove.6B.50d.txt')
+try:
+    A = readFile('test.txt')
 #glove.6B.50d
 
 #if user selects hash table
-if var == "2":
-    size = 7
-    #creates the hash table
-    H = CreateHashFromArray(A,size)
-    print('\nHash table stats:')
-    print('Initial table size: ', size)
-    print('Final table size:', len(H.item))
-    print('Load factor:', LoadFact(H))
-    print('Percentage of empty lists:', EmptyListPercent(H), "%")
-    print('Standard deviation of the lengths of the lists:', StandardDev(H))
-    
-    ComparisonFileName = input('Enter name of file to compare similarity\n')
-    #wordstocompare.txt
-    #Reads the compare similarity file into an array
-    ComparisonArray = ReadSimilFile(ComparisonFileName)
-            
-    print('\nReading word file to determine similarities\n')
-    
-    #calculates time that query takes
-    iquerytime = time.time()
-    for i in range(len(ComparisonArray)):
-        PrintSimilarityC(H, ComparisonArray[i][0], ComparisonArray[i][1])
-    fquerytime = time.time()
-    
-    querytime = fquerytime - iquerytime
-    print("Running time for hash table query processing:",querytime)
+    if var == "2":
+        size = 7
+        #creates the hash table
+        H = CreateHashFromArray(A,size)
+        print('\nHash table stats:')
+        print('Initial table size: ', size)
+        print('Final table size:', len(H.item))
+        print('Load factor:', LoadFact(H))
+        print('Percentage of empty lists:', EmptyListPercent(H), "%")
+        print('Standard deviation of the lengths of the lists:', StandardDev(H))
         
-elif var == "1":
-    T = None
-    #Calculates the time that it takes to create the binary tree
-    iconstructTime = time.time()
-    for a in A:
-        T = Insert(T,a)
-    fconstructTime = time.time()
-    constructTime = fconstructTime -iconstructTime
+        ComparisonFileName = input('Enter name of file to compare similarity\n')
+        #wordstocompare.txt
+        #Reads the compare similarity file into an array
+        ComparisonArray = ReadSimilFile(ComparisonFileName)
+                
+        print('\nReading word file to determine similarities\n')
+        
+        #calculates time that query takes
+        iquerytime = time.time()
+        for i in range(len(ComparisonArray)):
+            PrintSimilarityC(H, ComparisonArray[i][0], ComparisonArray[i][1])
+        fquerytime = time.time()
+        
+        querytime = fquerytime - iquerytime
+        print("Running time for hash table query processing:",querytime)
+         
+    elif var == "1":
+        T = None
+        #Calculates the time that it takes to create the binary tree
+        iconstructTime = time.time()
+        for a in A:
+            T = Insert(T,a)
+        fconstructTime = time.time()
+        constructTime = fconstructTime -iconstructTime
+        
+        print('\nBinary Search Tree stats:')
+        print("Number of nodes:",NumNodes(T))
+        print("Height:", Depth(T))
+        print("Running time for binary search tree construction:", constructTime)
     
-    print('\nBinary Search Tree stats:')
-    print("Number of nodes:",NumNodes(T))
-    print("Height:", Depth(T))
-    print("Running time for binary search tree construction:", constructTime)
-
-    ComparisonFileName = input('Enter name of file to compare similarity\n')
-    #Reads the compare similarity file into an array
-    ComparisonArray = ReadSimilFile(ComparisonFileName)
-
-    print('\nReading word file to determine similarities\n')
+        ComparisonFileName = input('Enter name of file to compare similarity\n')
+        #Reads the compare similarity file into an array
+        ComparisonArray = ReadSimilFile(ComparisonFileName)
     
-    #calculates time that query takes
-    iquerytime = time.time()
-    for i in range(len(ComparisonArray)):
-        PrintSimilarityBST(T, ComparisonArray[i][0], ComparisonArray[i][1])
-    fquerytime = time.time()
+        print('\nReading word file to determine similarities\n')
+        
+        #calculates time that query takes
+        iquerytime = time.time()
+        for i in range(len(ComparisonArray)):
+            PrintSimilarityBST(T, ComparisonArray[i][0], ComparisonArray[i][1])
+        fquerytime = time.time()
+        
+        querytime = fquerytime - iquerytime
+        
+        print("\nRunning time for binary search tree query processing:",querytime)
     
-    querytime = fquerytime - iquerytime
-    
-    print("\nRunning time for binary search tree query processing:",querytime)
+except FileNotFoundError:
+    print('File not found')   
 else:
     print("Incorrect input")
