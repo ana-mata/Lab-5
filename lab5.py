@@ -4,7 +4,7 @@
 #   Instructor: Olac Fuentes
 #   Description: Binary search tree operations
 #   T.A.: Anindita Nath, Malilheh Zargaran
-#   Last modified: 04/01/2019
+#   Last modified: 04/03/2019
 #   Purpose: Calculate the similarity between two strings using hash tables and binary search tree to store words
 #   and vectors
 
